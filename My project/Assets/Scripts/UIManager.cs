@@ -1,16 +1,19 @@
-using UnityEngine;
-using UnityEngine.UI;
-using System;
+﻿using UnityEngine;
+using TMPro;   // 👈 Importa TextMeshPro
 
 public class UIManager : MonoBehaviour
 {
-    public Text txtPileSize;
-    public Text txtTop;
-    public Text txtGenerated;
-    public Text txtDispatched;
-    public GameObject resultsPanel;
-    public Text txtResults;
+    [Header("Indicadores en pantalla")]
+    public TMP_Text txtPileSize;
+    public TMP_Text txtTop;
+    public TMP_Text txtGenerated;
+    public TMP_Text txtDispatched;
 
+    [Header("Panel de resultados")]
+    public GameObject resultsPanel;
+    public TMP_Text txtResults;
+
+    [Header("Referencia al simulador")]
     public StackSimulator simulator;
 
     void Start()
@@ -19,27 +22,38 @@ public class UIManager : MonoBehaviour
         UpdateIndicators(0, null, 0, 0);
     }
 
+    // Botón "Iniciar"
     public void OnStartButton()
     {
         simulator.StartSimulation();
     }
 
+    // Botón "Cerrar Interacción"
     public void OnStopButton()
     {
         simulator.StopSimulation();
     }
 
+    // Actualizar textos de indicadores
     public void UpdateIndicators(int pileSize, Product topProduct, int generated, int dispatched)
     {
-        txtPileSize.text = "Tama�o pila: " + pileSize;
-        txtTop.text = topProduct != null ? "Tope: " + topProduct.id + " - " + topProduct.nombre : "Tope: -";
+        txtPileSize.text = "Tamaño pila: " + pileSize;
+        txtTop.text = topProduct != null ? "Tope: " + topProduct.id + " - " + topProduct.nombre : "Tope: ---";
         txtGenerated.text = "Generados: " + generated;
         txtDispatched.text = "Despachados: " + dispatched;
     }
 
+    // Mostrar panel de resultados al terminar
     public void ShowResults(StackSimulator.Results r)
     {
         resultsPanel.SetActive(true);
-        txtResults.text = $"Generados: {r.total_generados}\nDespachados: {r.total_despachados}\nEn pila: {r.total_en_pila}\nTiempo promedio despacho: {r.tiempo_promedio_despacho:F2}s\nTotal tiempo despacho: {r.total_tiempo_despacho}s\nPor tipo: {r.despachados_por_tipo}\nTipo mayor: {r.tipo_mas_despachado}";
+        txtResults.text =
+            $"Generados: {r.total_generados}\n" +
+            $"Despachados: {r.total_despachados}\n" +
+            $"En pila: {r.total_en_pila}\n" +
+            $"Tiempo promedio despacho: {r.tiempo_promedio_despacho:F2}s\n" +
+            $"Total tiempo despacho: {r.total_tiempo_despacho}s\n" +
+            $"Por tipo: {r.despachados_por_tipo}\n" +
+            $"Tipo mayor: {r.tipo_mas_despachado}";
     }
 }
