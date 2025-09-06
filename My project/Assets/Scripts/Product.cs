@@ -1,4 +1,3 @@
-using UnityEngine;
 using System;
 
 [Serializable]
@@ -11,6 +10,8 @@ public class Product
     public float precio;
     public int tiempoDespacho; 
 
+    public Product() { } 
+
     public Product(string id, string nombre, string tipo, float peso, float precio, int tiempoDespacho)
     {
         this.id = id;
@@ -21,4 +22,3 @@ public class Product
         this.tiempoDespacho = tiempoDespacho;
     }
 }
-
