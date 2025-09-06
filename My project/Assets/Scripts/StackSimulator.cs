@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -7,8 +7,9 @@ public class StackSimulator : MonoBehaviour
 {
     public UIManager uiManager;
 
+   
     private Stack<Product> pila = new Stack<Product>();
-    private List<Product> productPool; 
+    private List<Product> productPool;
     private bool running = false;
 
     
@@ -41,10 +42,9 @@ public class StackSimulator : MonoBehaviour
         if (!running) return;
         running = false;
         tiempoFin = Time.time;
-        
+
         var results = BuildResults();
         string json = JsonUtility.ToJson(results, true);
-        
         string filename = "results_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
         System.IO.File.WriteAllText(System.IO.Path.Combine(Application.streamingAssetsPath, filename), json);
         Debug.Log("Resultados guardados en: " + filename);
@@ -56,14 +56,18 @@ public class StackSimulator : MonoBehaviour
         var rand = new System.Random(12345); 
         while (running)
         {
-            
-            int count = rand.Next(1, 4);
+            int count = rand.Next(1, 4); 
             for (int i = 0; i < count; i++)
             {
-                
                 if (productPool.Count == 0) continue;
+
+               
                 Product p = productPool[totalGenerados % productPool.Count];
+
+              
                 pila.Push(p);
+                Debug.Log("PUSH → Producto " + p.id + " agregado a la pila");
+
                 totalGenerados++;
                 uiManager.UpdateIndicators(pila.Count, pila.Peek(), totalGenerados, totalDespachados);
             }
@@ -77,19 +81,24 @@ public class StackSimulator : MonoBehaviour
         {
             if (pila.Count > 0)
             {
+                
                 Product current = pila.Peek();
+
                 
                 yield return new WaitForSeconds(current.tiempoDespacho);
+
+                
                 Product desp = pila.Pop();
+                Debug.Log("POP → Producto " + desp.id + " retirado de la pila");
+
                 totalDespachados++;
                 tiempoDespachoTotal += desp.tiempoDespacho;
-                if (despachadosPorTipo.ContainsKey(desp.tipo)) despachadosPorTipo[desp.tipo]++;
-                else despachadosPorTipo[desp.tipo] = 1;
+                despachadosPorTipo[desp.tipo]++;
+
                 uiManager.UpdateIndicators(pila.Count, (pila.Count > 0 ? pila.Peek() : null), totalGenerados, totalDespachados);
             }
             else
             {
-                
                 yield return new WaitForSeconds(0.2f);
             }
             yield return null;
@@ -105,7 +114,7 @@ public class StackSimulator : MonoBehaviour
         public int total_en_pila;
         public float tiempo_promedio_despacho;
         public float total_tiempo_despacho;
-        public string despachados_por_tipo; 
+        public string despachados_por_tipo;
         public string tipo_mas_despachado;
         public float tiempo_total_generacion;
     }
