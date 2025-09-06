@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using TMPro;   // 👈 Importa TextMeshPro
+using TMPro;   
 
 public class UIManager : MonoBehaviour
 {
@@ -22,19 +22,19 @@ public class UIManager : MonoBehaviour
         UpdateIndicators(0, null, 0, 0);
     }
 
-    // Botón "Iniciar"
+   
     public void OnStartButton()
     {
         simulator.StartSimulation();
     }
 
-    // Botón "Cerrar Interacción"
+    
     public void OnStopButton()
     {
         simulator.StopSimulation();
     }
 
-    // Actualizar textos de indicadores
+    
     public void UpdateIndicators(int pileSize, Product topProduct, int generated, int dispatched)
     {
         txtPileSize.text = "Tamaño pila: " + pileSize;
@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
         txtDispatched.text = "Despachados: " + dispatched;
     }
 
-    // Mostrar panel de resultados al terminar
+    
     public void ShowResults(StackSimulator.Results r)
     {
         resultsPanel.SetActive(true);

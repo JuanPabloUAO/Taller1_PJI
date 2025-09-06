@@ -6,10 +6,10 @@ public class Product
 {
     public string id;
     public string nombre;
-    public string tipo; // Basico, Fragil, Pesado
+    public string tipo; 
     public float peso;
     public float precio;
-    public int tiempoDespacho; // segundos
+    public int tiempoDespacho; 
 
     public Product(string id, string nombre, string tipo, float peso, float precio, int tiempoDespacho)
     {
