@@ -8,10 +8,10 @@ public class StackSimulator : MonoBehaviour
     public UIManager uiManager;
 
     private Stack<Product> pila = new Stack<Product>();
-    private List<Product> productPool; // productos leídos del txt
+    private List<Product> productPool; 
     private bool running = false;
 
-    // Métricas
+    
     private float tiempoInicio = 0f;
     private float tiempoFin = 0f;
     private int totalGenerados = 0;
@@ -22,7 +22,6 @@ public class StackSimulator : MonoBehaviour
     void Start()
     {
         productPool = ProductParser.LoadFromTxt();
-        // inicializar contador por tipo
         despachadosPorTipo["Basico"] = 0;
         despachadosPorTipo["Fragil"] = 0;
         despachadosPorTipo["Pesado"] = 0;
@@ -42,10 +41,10 @@ public class StackSimulator : MonoBehaviour
         if (!running) return;
         running = false;
         tiempoFin = Time.time;
-        // Calcular métricas finales y exportar JSON
+        
         var results = BuildResults();
         string json = JsonUtility.ToJson(results, true);
-        // Guardar en StreamingAssets con timestamp
+        
         string filename = "results_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
         System.IO.File.WriteAllText(System.IO.Path.Combine(Application.streamingAssetsPath, filename), json);
         Debug.Log("Resultados guardados en: " + filename);
@@ -54,14 +53,14 @@ public class StackSimulator : MonoBehaviour
 
     IEnumerator GenerationLoop()
     {
-        var rand = new System.Random(12345); // semilla para reproducibilidad -> facilita rubrica
+        var rand = new System.Random(12345); 
         while (running)
         {
-            // generar entre 1 y 3 productos
+            
             int count = rand.Next(1, 4);
             for (int i = 0; i < count; i++)
             {
-                // tomar siguiente producto de productPool en orden cíclico para reproducibilidad
+                
                 if (productPool.Count == 0) continue;
                 Product p = productPool[totalGenerados % productPool.Count];
                 pila.Push(p);
@@ -79,7 +78,7 @@ public class StackSimulator : MonoBehaviour
             if (pila.Count > 0)
             {
                 Product current = pila.Peek();
-                // Simula el despacho tomando tiempo = current.tiempoDespacho
+                
                 yield return new WaitForSeconds(current.tiempoDespacho);
                 Product desp = pila.Pop();
                 totalDespachados++;
@@ -90,14 +89,14 @@ public class StackSimulator : MonoBehaviour
             }
             else
             {
-                // si no hay elementos, espera un ciclo corto
+                
                 yield return new WaitForSeconds(0.2f);
             }
             yield return null;
         }
     }
 
-    // Resultado serializable
+    
     [System.Serializable]
     public class Results
     {
@@ -106,7 +105,7 @@ public class StackSimulator : MonoBehaviour
         public int total_en_pila;
         public float tiempo_promedio_despacho;
         public float total_tiempo_despacho;
-        public string despachados_por_tipo; // "Basico:4,Fragil:5,Pesado:8"
+        public string despachados_por_tipo; 
         public string tipo_mas_despachado;
         public float tiempo_total_generacion;
     }
