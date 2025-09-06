@@ -1,0 +1,10 @@
+{
+    "total_generados": 13,
+    "total_despachados": 2,
+    "total_en_pila": 11,
+    "tiempo_promedio_despacho": 3.0,
+    "total_tiempo_despacho": 6.0,
+    "despachados_por_tipo": "Basico:1,Fragil:0,Pesado:1",
+    "tipo_mas_despachado": "Basico",
+    "tiempo_total_generacion": 5.280775547027588
+}
